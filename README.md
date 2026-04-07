@@ -161,15 +161,21 @@ youtube-cleaner/
    cd youtube-cleaner
    ```
 
-2. **Install Go dependencies:**
+2. **Install Go** (1.23 or later) — [download here](https://go.dev/dl/). Verify with:
 
    ```bash
-   go mod download
+   go version
    ```
 
-3. **Set up environment variables** (see [Quick Start](#2-configure-environment) above).
+3. **Download dependencies:**
 
-4. **Run the development server:**
+   ```bash
+   make deps
+   ```
+
+4. **Set up environment variables** (see [Quick Start](#2-configure-environment) above).
+
+5. **Run the development server:**
 
    ```bash
    make run
@@ -177,24 +183,47 @@ youtube-cleaner/
 
    The server starts at `http://localhost:8080` by default.
 
+6. **Run all checks before committing:**
+
+   ```bash
+   make lint test build
+   ```
+
 ### Make Targets
+
+Run `make help` to see all available targets:
 
 | Command | Description |
 |---|---|
+| **Go** | |
+| `make help` | Show all available targets |
+| `make deps` | Download Go module dependencies |
 | `make build` | Compile the binary to `bin/youtube-cleaner` |
-| `make run` | Build and run the server |
-| `make test` | Run all tests with race detector (`go test ./... -v -race`) |
-| `make lint` | Run static analysis (`go vet ./...`) |
-| `make tidy` | Clean up `go.mod` and `go.sum` |
-| `make clean` | Remove build artifacts |
+| `make run` | Build and run the server locally |
+| `make test` | Run all tests with race detector |
+| `make test-cover` | Run tests and generate coverage report |
+| `make lint` | Run all linters (`go vet` + format check) |
+| `make vet` | Run `go vet` static analysis |
+| `make fmt` | Check code formatting (fails if files need `gofmt`) |
+| `make tidy` | Tidy `go.mod` and `go.sum` |
+| `make clean` | Remove build artifacts and coverage files |
+| **Docker** | |
 | `make docker-build` | Build the Docker image |
-| `make docker-run` | Build and run in Docker |
+| `make docker-run` | Build image and run container directly |
+| `make docker-up` | Start services with Docker Compose (foreground) |
+| `make docker-up-d` | Start services with Docker Compose (background) |
+| `make docker-down` | Stop Docker Compose services |
+| `make docker-logs` | Follow Docker Compose logs |
+| `make docker-clean` | Stop services and remove images/volumes |
 
 ### Running Tests
 
 ```bash
 # Run all tests with verbose output and race detection
 make test
+
+# Run tests with coverage report
+make test-cover
 
 # Run tests for a specific package
 go test ./internal/handlers/ -v
@@ -226,20 +255,26 @@ go test ./internal/youtube/ -run TestGenerateStateToken -v
 
 ### Docker Development
 
-Build and run with Docker Compose:
+All Docker operations are available via Make targets:
 
 ```bash
-# Build and start
-docker compose up --build
+# Build and start (foreground)
+make docker-up
 
-# Run in background
-docker compose up -d
+# Build and start (background)
+make docker-up-d
 
 # View logs
-docker compose logs -f
+make docker-logs
 
 # Stop
-docker compose down
+make docker-down
+
+# Stop and remove images/volumes
+make docker-clean
+
+# Or run a one-off container directly (no Compose)
+make docker-run
 ```
 
 The Dockerfile uses a multi-stage build: Go 1.23 Alpine for compilation, Alpine 3.20 for the runtime image.
