@@ -59,7 +59,7 @@ The server authenticates users via Google OAuth2, then uses the YouTube Data API
 
 ### Prerequisites
 
-- [Go 1.23+](https://go.dev/dl/) (or [Docker](https://docs.docker.com/get-docker/))
+- [Go 1.25+](https://go.dev/dl/) (or [Docker](https://docs.docker.com/get-docker/))
 - A [Google Cloud project](https://console.cloud.google.com/) with the **YouTube Data API v3** enabled
 - OAuth2 credentials (Client ID and Client Secret)
 
@@ -161,7 +161,7 @@ youtube-cleaner/
    cd youtube-cleaner
    ```
 
-2. **Install Go** (1.23 or later) — [download here](https://go.dev/dl/). Verify with:
+2. **Install Go** (1.25 or later) — [download here](https://go.dev/dl/). Verify with:
 
    ```bash
    go version
@@ -277,7 +277,7 @@ make docker-clean
 make docker-run
 ```
 
-The Dockerfile uses a multi-stage build: Go 1.23 Alpine for compilation, Alpine 3.20 for the runtime image.
+The Dockerfile uses a multi-stage build: Go Alpine for compilation, Alpine 3.20 for the runtime image.
 
 ### Environment Variables
 
