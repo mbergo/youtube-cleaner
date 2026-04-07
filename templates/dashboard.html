@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - YouTube Cleaner</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/dashboard" class="navbar-brand">
+            <img src="/static/favicon.svg" alt="YouTube Cleaner">
+            <span>YouTube Cleaner</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="/dashboard" class="active">Dashboard</a></li>
+            <li><a href="/subscriptions">Subscriptions</a></li>
+            <li><a href="/playlists">Playlists</a></li>
+            <li><a href="/videos">Videos</a></li>
+            <li><a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+        </div>
+
+        {{if .Error}}
+        <div class="alert alert-error">{{.Error}}</div>
+        {{end}}
+
+        {{if .Stats}}
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎬</div>
+                <div class="stat-label">Uploaded Videos</div>
+                <div class="stat-value">{{.Stats.VideoCount}}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📺</div>
+                <div class="stat-label">Subscriptions</div>
+                <div class="stat-value">{{.Stats.SubscriptionCount}}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-label">Playlists</div>
+                <div class="stat-value">{{.Stats.PlaylistCount}}</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🧹</div>
+                <div class="stat-label">Quick Actions</div>
+                <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                    <a href="/subscriptions" class="btn btn-secondary btn-sm">Manage Subscriptions</a>
+                    <a href="/playlists" class="btn btn-secondary btn-sm">Manage Playlists</a>
+                    <a href="/videos" class="btn btn-secondary btn-sm">Manage Videos</a>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+
+    <footer class="footer">
+        <p>YouTube Cleaner &mdash; Clean up your YouTube account responsibly.</p>
+    </footer>
+</body>
+</html>
