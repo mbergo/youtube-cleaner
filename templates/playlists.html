@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlists - YouTube Cleaner</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/dashboard" class="navbar-brand">
+            <img src="/static/favicon.svg" alt="YouTube Cleaner">
+            <span>YouTube Cleaner</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/subscriptions">Subscriptions</a></li>
+            <li><a href="/playlists" class="active">Playlists</a></li>
+            <li><a href="/videos">Videos</a></li>
+            <li><a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📋 Playlists</h1>
+        </div>
+
+        {{if .Error}}
+        <div class="alert alert-error">{{.Error}}</div>
+        {{end}}
+
+        <div class="item-grid">
+            {{range .Playlists}}
+            <div class="item-card">
+                {{if .ThumbnailURL}}
+                <img src="{{.ThumbnailURL}}" alt="{{.Title}}" class="thumbnail">
+                {{end}}
+                <div class="card-body">
+                    <div class="card-title">{{.Title}}</div>
+                    <div class="card-subtitle">{{.ItemCount}} videos</div>
+                    <div class="card-actions">
+                        <a href="https://youtube.com/playlist?list={{.ID}}" target="_blank" class="btn btn-outline btn-sm">View</a>
+                        <button onclick="deletePlaylist('{{.ID}}', this)" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+
+        {{if .NextPageToken}}
+        <div class="pagination">
+            <a href="/playlists?pageToken={{.NextPageToken}}" class="btn btn-secondary">Load More</a>
+        </div>
+        {{end}}
+    </div>
+
+    <footer class="footer">
+        <p>YouTube Cleaner &mdash; Clean up your YouTube account responsibly.</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

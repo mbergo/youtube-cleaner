@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videos - YouTube Cleaner</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/dashboard" class="navbar-brand">
+            <img src="/static/favicon.svg" alt="YouTube Cleaner">
+            <span>YouTube Cleaner</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/subscriptions">Subscriptions</a></li>
+            <li><a href="/playlists">Playlists</a></li>
+            <li><a href="/videos" class="active">Videos</a></li>
+            <li><a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🎬 Videos</h1>
+        </div>
+
+        {{if .Error}}
+        <div class="alert alert-error">{{.Error}}</div>
+        {{end}}
+
+        <div class="item-grid">
+            {{range .Videos}}
+            <div class="item-card">
+                {{if .ThumbnailURL}}
+                <img src="{{.ThumbnailURL}}" alt="{{.Title}}" class="thumbnail">
+                {{end}}
+                <div class="card-body">
+                    <div class="card-title">{{.Title}}</div>
+                    <div class="card-subtitle">Published {{.PublishedAt.Format "Jan 2, 2006"}}</div>
+                    <div class="card-actions">
+                        <a href="https://youtube.com/watch?v={{.ID}}" target="_blank" class="btn btn-outline btn-sm">Watch</a>
+                        <button onclick="deleteVideo('{{.ID}}', this)" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+
+        {{if .NextPageToken}}
+        <div class="pagination">
+            <a href="/videos?pageToken={{.NextPageToken}}" class="btn btn-secondary">Load More</a>
+        </div>
+        {{end}}
+    </div>
+
+    <footer class="footer">
+        <p>YouTube Cleaner &mdash; Clean up your YouTube account responsibly.</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
